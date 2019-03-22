@@ -1,0 +1,8 @@
+<%= render 'messages' %>
+<%= link_to 'Home', root_path %>
+<ul>
+  <% @pokemons.each do |pokemon| %>
+    <li><%= pokemon.name.capitalize %></li>
+    <% break if pokemon.number == @pokemon_limit %>
+  <% end %>
+</ul>
