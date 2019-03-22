@@ -15,22 +15,15 @@ class PokemonsController < ApplicationController
 
   def upload
     csv_path = File.join(Rails.root, 'db', 'pokemon.csv')
-
-    CSV.foreach((csv_path), headers: true) do |pokemon|
-      pokemon = Pokemon.create(number: pokemon['species_id'], 
-                            name: pokemon['identifier'], 
-                            height: pokemon['height'], 
-                            weight: pokemon['weight'], 
-                            base_exp: pokemon['base_experience'])
-
-    end
-    flash[:notice] = "All Pokemon added to db."
+    PokemonAddWorker.perform_async(csv_path)
+    
+    flash[:notice] = "Adding Pokemon to the db.."
     redirect_to root_path
   end
 
   def destroy
-    Pokemon.destroy_all
-    flash[:notice] = "All Pokemon deleted from db."
+    PokemonRemoveWorker.perform_async
+    flash[:notice] = "Removing Pokemon from the db..."
     redirect_to root_path
   end
 

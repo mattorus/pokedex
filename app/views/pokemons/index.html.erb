@@ -1,13 +1,28 @@
 <%= render 'messages' %>
 
+<h2>Pokemon</h2>
+
 <% if !@pokemons.any?%>
   <%= button_to 'Upload Pokemon!', upload_path %>
 <% else %>
-  <%= form_for(:pokemon, url: list_path) do |f| %>
-    <%= f.label :limit, 'How many Pokemon?' %><br/>
-    <%= f.text_field :limit %><br/>
-
-    <%= f.submit 'List Pokemon!'%>
-  <% end %>
   <%= button_to 'Delete all', destroy_path, method: :delete, data: {confirm: "Are you sure?"} %>
 <% end %>
+
+<table id='pokedex_table'>
+  <tr>
+    <th>Pokedex #</th>
+    <th>Pokemon</th>
+    <th>Height</th>
+    <th>Weight</th>
+    <th>Base Exp</th>
+  </tr>
+  <% @pokemons.each do |pokemon| %>
+    <tr>
+      <th><%= pokemon.number %></th>
+      <th><%= pokemon.name %></th>
+      <th><%= pokemon.height %></th>
+      <th><%= pokemon.weight %></th>
+      <th><%= pokemon.base_exp %></th>
+    </tr>
+  <% end %>
+</table>
